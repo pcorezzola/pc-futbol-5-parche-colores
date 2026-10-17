@@ -1,0 +1,1 @@
+94895cf6ede8fd0f74ee1447fdc08b7044a9c65a1a25a49a4df893a0370975a3  patch/ddraw.dll
