@@ -6,7 +6,7 @@ Paquete de compatibilidad gráfica basado en **DDrawCompat v0.7.2**, preparado a
 
 El componente que corrige la compatibilidad es [DDrawCompat, de narzoul](https://github.com/narzoul/DDrawCompat). Este repositorio distribuye su DLL oficial sin modificar y documenta su aplicación al juego. No contiene el juego ni un ejecutable modificado.
 
-> **Importante para Apertura 97: abrir `MANAGARG.EXE`.** En la instalación probada, el parche funciona al ejecutar directamente ese archivo, pero no al iniciar desde `FUT5WIN.EXE`. Si usás este último o un acceso directo que apunta a él, podrías creer que el parche no funciona aunque la DLL esté correctamente instalada. Probá primero `MANAGARG.EXE`.
+> **Comprobado en Apertura 97:** el usuario volvió a probar el parche y confirmó que los colores funcionan correctamente tanto al iniciar desde `MANAGARG.EXE` como desde `FUT5WIN.EXE`.
 
 ## Descarga e instalación rápida
 
@@ -15,8 +15,8 @@ El componente que corrige la compatibilidad es [DDrawCompat, de narzoul](https:/
 3. Localizar la carpeta de instalación, donde está el ejecutable principal. En la edición analizada se llama `MANAGARG.EXE`.
 4. Si ya existe una `ddraw.dll` en esa carpeta, guardar una copia antes de reemplazarla.
 5. Copiar **[patch/ddraw.dll](patch/ddraw.dll)** junto al ejecutable, directamente en la carpeta del juego.
-6. **En Apertura 97, iniciar directamente `MANAGARG.EXE`**, desde la carpeta donde copiaste `ddraw.dll`. Evitar `FUT5WIN.EXE` para esta prueba.
-7. Si usás un acceso directo, abrir **Propiedades → Acceso directo** y comprobar que **Destino** apunte a `MANAGARG.EXE` y que **Iniciar en** corresponda a la carpeta del juego. También podés crear un acceso directo nuevo a `MANAGARG.EXE`.
+6. **En Apertura 97, iniciar desde `MANAGARG.EXE` o `FUT5WIN.EXE`**. El usuario confirmó que los colores funcionan desde ambos ejecutables.
+7. Si usás un acceso directo, comprobar que **Destino** apunte al ejecutable de esta instalación y que **Iniciar en** corresponda a la carpeta del juego.
 
 Ejemplo de ubicación final:
 
@@ -32,18 +32,13 @@ Apertura97/
 
 La DLL debe quedar junto al ejecutable que utiliza DirectDraw; dejarla dentro de una subcarpeta `patch` del juego no la instala. No es necesario registrar la DLL, copiarla en las carpetas del sistema ni modificar `MANAGER.INI` para reproducir esta instalación.
 
-## Qué ejecutable abrir: MANAGARG.EXE y FUT5WIN.EXE
+## Inicio desde MANAGARG.EXE y FUT5WIN.EXE
 
-| Forma de iniciar Apertura 97 | Resultado informado por el usuario |
-| --- | --- |
-| Ejecutar directamente `MANAGARG.EXE` | El parche funciona correctamente |
-| Ejecutar `FUT5WIN.EXE` | El parche no dio resultado |
+El usuario volvió a verificar la instalación y confirmó que **los colores funcionan correctamente al iniciar tanto desde `MANAGARG.EXE` como desde `FUT5WIN.EXE`**. Esta confirmación reemplaza el resultado preliminar que indicaba un problema al abrir desde `FUT5WIN.EXE`; no se confirmó una limitación específica de ese ejecutable ni la causa de la diferencia entre pruebas.
 
-**Esta diferencia no significa que hayas instalado mal el parche.** Antes de reinstalarlo o descartarlo, cerrá el juego y ejecutá `MANAGARG.EXE` desde su carpeta. Revisá también los accesos directos antiguos, porque podrían seguir apuntando a `FUT5WIN.EXE`.
+La inspección estática encontró las cadenas `ddraw.dll` y `DirectDrawCreate` en `MANAGARG.EXE`, mientras que en la búsqueda sobre `FUT5WIN.EXE` no apareció `ddraw.dll`. La ausencia de esa cadena no demuestra que el parche no pueda funcionar al iniciar desde ese archivo. No se verificó qué procesos, parámetros o directorio de trabajo utiliza `FUT5WIN.EXE`.
 
-Desde el punto de vista técnico, se encontraron las cadenas `ddraw.dll` y `DirectDrawCreate` en `MANAGARG.EXE`; en la búsqueda realizada sobre `FUT5WIN.EXE` no apareció `ddraw.dll`. El wrapper interviene cuando un proceso carga la biblioteca correspondiente. Sin embargo, esas cadenas por sí solas no explican la diferencia: **todavía no se verificó si `FUT5WIN.EXE` actúa como lanzador, qué procesos inicia, ni qué parámetros o directorio de trabajo utiliza**. No se atribuye el fallo a una causa concreta sin esa comprobación.
-
-Esta recomendación corresponde a **PC Fútbol 5.0 Argentina / Apertura 97**. Otras ediciones pueden utilizar nombres de ejecutables distintos.
+Estos resultados corresponden a **PC Fútbol 5.0 Argentina / Apertura 97** en la instalación probada. Otras ediciones y equipos requieren pruebas independientes.
 
 ## Desinstalación y reversibilidad
 
@@ -140,7 +135,7 @@ Para reconstruir el paquete, descargar el ZIP de la [publicación oficial](https
 | Caso | Estado |
 | --- | --- |
 | Apertura 97 iniciado directamente desde `MANAGARG.EXE` | El usuario confirmó que el parche funciona bien |
-| Apertura 97 iniciado desde `FUT5WIN.EXE` | El usuario informó que el parche no dio resultado |
+| Apertura 97 iniciado desde `FUT5WIN.EXE` | El usuario volvió a probar y confirmó que los colores funcionan bien |
 | Conservación de los tres ejecutables originales | Verificada mediante SHA-256 |
 | Integridad del archivo descargado | Verificada contra el digest del asset oficial |
 | Registro de carga inspeccionado por el mantenedor | Pendiente |
@@ -157,7 +152,7 @@ Los requisitos generales de DDrawCompat incluyen Windows Vista/7/8/10/11, CPU co
 
 ### Los colores siguen mal
 
-**Primero comprobá con qué ejecutable abriste el juego.** En Apertura 97, cerralo y ejecutá directamente `MANAGARG.EXE`; el usuario informó que al iniciar desde `FUT5WIN.EXE` el parche no dio resultado. Si así se corrige, actualizá el acceso directo para que apunte a `MANAGARG.EXE`.
+En la instalación probada de Apertura 97, los colores funcionan desde `MANAGARG.EXE` y `FUT5WIN.EXE`. Si falla en tu equipo, comprobar que el ejecutable o acceso directo pertenezca a la misma instalación donde copiaste la DLL.
 
 Comprobar que `ddraw.dll` está junto al ejecutable real, que coincide el SHA-256 y que no se está iniciando otra copia del juego. Buscar un archivo como `DDrawCompat-MANAGARG.log` en la carpeta del juego. El proyecto original indica que la ausencia de registro puede significar que la DLL no fue cargada o que el registro está desactivado.
 
